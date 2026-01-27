@@ -48,6 +48,46 @@ const VariableConfig = {
     ]
 };
 
+// ============================================
+// POSITION SERVICE
+// Loads and manages predefined job positions
+// ============================================
+const PositionService = {
+    positions: [],
+
+    async loadPositions() {
+        try {
+            const response = await fetch('cargos.json');
+            if (response.ok) {
+                this.positions = await response.json();
+            }
+        } catch (error) {
+            console.warn('Could not load positions:', error);
+            this.positions = [];
+        }
+    },
+
+    getPositionById(id) {
+        return this.positions.find(p => p.id === id);
+    },
+
+    getAllPositions() {
+        return this.positions;
+    },
+
+    populateDropdown() {
+        const select = document.getElementById('positionSelect');
+        if (!select) return;
+
+        this.positions.forEach(position => {
+            const option = document.createElement('option');
+            option.value = position.id;
+            option.textContent = position.title;
+            select.appendChild(option);
+        });
+    }
+};
+
 const StepperConfig = {
     totalSteps: 6,
     stepValidation: {
@@ -575,6 +615,28 @@ const EventHandlers = {
     onNewContractClick() {
         UIService.resetForm();
         StepperService.reset();
+    },
+
+    onPositionSelect(event) {
+        const positionId = event.target.value;
+        const workTitleInput = document.getElementById('work_title');
+        const functionsInput = document.getElementById('enumerated_functions');
+
+        if (positionId) {
+            const position = PositionService.getPositionById(positionId);
+            if (position) {
+                workTitleInput.value = position.title;
+                functionsInput.value = position.functions;
+                workTitleInput.classList.add('filled');
+                functionsInput.classList.add('filled');
+            }
+        } else {
+            // Clear fields for manual entry
+            workTitleInput.value = '';
+            functionsInput.value = '';
+            workTitleInput.classList.remove('filled');
+            functionsInput.classList.remove('filled');
+        }
     }
 };
 
@@ -582,11 +644,15 @@ const EventHandlers = {
 // APPLICATION
 // ============================================
 const App = {
-    init() {
+    async init() {
         UIService.init();
         UIService.populateTemplates();
         UIService.addInputAnimations();
         StepperService.init();
+
+        // Load predefined positions
+        await PositionService.loadPositions();
+        PositionService.populateDropdown();
 
         // Bind events
         const { templateSelect, form, prevBtn, nextBtn, newContractBtn } = UIService.elements;
@@ -599,6 +665,7 @@ const App = {
 
         document.getElementById('contract_date')?.addEventListener('change', EventHandlers.onDateChange);
         document.getElementById('salary_input')?.addEventListener('input', EventHandlers.onSalaryChange);
+        document.getElementById('positionSelect')?.addEventListener('change', EventHandlers.onPositionSelect);
 
         // Step indicator clicks
         document.querySelectorAll('.step-indicator').forEach(indicator => {

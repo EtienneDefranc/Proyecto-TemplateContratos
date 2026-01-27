@@ -1,0 +1,12 @@
+[
+    {
+        "id": "vendedor_promotor",
+        "title": "VENDEDOR - PROMOTOR",
+        "functions": "1. Ventas telemáticas, gestión de renovaciones y referidos.\n2. Cumplir con las metas o presupuestos de ventas que semanal, quincenal o mensualmente establezca su EMPLEADORA.\n3. Cumplir con las demás funciones o labores relacionadas a su cargo, como también con las demás disposiciones impartidas por su jefe inmediato."
+    },
+    {
+        "id": "instructor_capacitador",
+        "title": "INSTRUCTOR CAPACITADOR",
+        "functions": "1. Apoyo académico para alumnos o clientes de la EMPRESA.\n2. Seguimiento y asistencia a  cada estudiante.\n3. Cumplir con las demás funciones o labores relacionadas a su cargo, como también con las demás disposiciones impartidas por su jefe inmediato."
+    }
+]

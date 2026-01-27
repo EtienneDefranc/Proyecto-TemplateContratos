@@ -176,6 +176,19 @@
                         <span class="section-icon">💼</span>
                         Información Laboral
                     </h2>
+
+                    <!-- Predefined Position Selector -->
+                    <div class="form-group">
+                        <label for="positionSelect">Seleccionar Cargo Predefinido</label>
+                        <select id="positionSelect" name="positionSelect">
+                            <option value="">-- Personalizar cargo manualmente --</option>
+                        </select>
+                    </div>
+
+                    <div class="position-divider">
+                        <span>Datos del cargo</span>
+                    </div>
+
                     <div class="form-group">
                         <label for="work_title">Cargo / Título del Puesto</label>
                         <input type="text" id="work_title" name="work_title"
@@ -183,9 +196,11 @@
                     </div>
                     <div class="form-group">
                         <label for="enumerated_functions">Funciones del Cargo</label>
-                        <textarea id="enumerated_functions" name="enumerated_functions" rows="4"
+                        <textarea id="enumerated_functions" name="enumerated_functions" rows="6"
                             placeholder="Ej: 1. Desarrollo de aplicaciones web&#10;2. Análisis de requerimientos&#10;3. Soporte técnico"
                             required></textarea>
+                        <span class="form-hint">Puede editar las funciones después de seleccionar un cargo
+                            predefinido</span>
                     </div>
                 </section>
 
