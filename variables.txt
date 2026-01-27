@@ -1,0 +1,14 @@
+{day_number_text}
+{month_text}
+{year_text}
+{name_worker}
+{id_worker}
+{work_title}
+{enumerated_functions}
+{domicile_worker}
+{city_name_worker}
+{province_name_worker}
+{mail_worker}
+{salary_text}
+{salary_cents_text}
+{salary_value}
