@@ -539,6 +539,16 @@ const ContractGenerator = {
         }
 
         const formData = FormDataService.collect();
+        
+        // Convertir la lista de funciones a un formato de array para permitir listas nativas en Word
+        if (formData.enumerated_functions) {
+            formData.funciones_lista = formData.enumerated_functions
+                .split('\n')
+                .map(line => line.replace(/^[0-9]+[\.\-\)]\s*/, '').trim())
+                .filter(line => line.length > 0)
+                .map(line => ({ item: line }));
+        }
+
         const validation = FormDataService.validate(formData);
 
         if (!validation.valid) {
