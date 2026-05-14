@@ -254,8 +254,7 @@ const TemplateService = {
             linebreaks: true,
             delimiters: { start: '{', end: '}' }
         });
-        doc.setData(data);
-        doc.render();
+        doc.render(data);
         return doc.getZip().generate({
             type: 'blob',
             mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
@@ -522,6 +521,23 @@ const ContractGenerator = {
         const template = TemplateConfig.getTemplateById(templateId);
         if (!template) throw new Error('Plantilla no encontrada');
 
+        // Sincronizar campos ocultos antes de recolectar para evitar errores de validación si no se disparó el evento 'change'
+        const dateInput = document.getElementById('contract_date')?.value;
+        if (dateInput) {
+            const converted = SpanishDateConverter.convert(dateInput);
+            document.getElementById('day_number_text').value = converted.day;
+            document.getElementById('month_text').value = converted.month;
+            document.getElementById('year_text').value = converted.year;
+        }
+
+        const salaryInput = document.getElementById('salary_input')?.value;
+        if (salaryInput) {
+            const converted = SalaryConverter.convert(parseFloat(salaryInput));
+            document.getElementById('salary_value').value = converted.value;
+            document.getElementById('salary_text').value = converted.text;
+            document.getElementById('salary_cents_text').value = converted.cents;
+        }
+
         const formData = FormDataService.collect();
         const validation = FormDataService.validate(formData);
 
@@ -537,7 +553,20 @@ const ContractGenerator = {
             const content = await TemplateService.fetchTemplate(template.file);
             const output = TemplateService.processTemplate(content, formData);
             const fileName = TemplateService.generateFileName(formData.name_worker);
-            saveAs(output, fileName);
+
+            // Usar mecanismo de descarga nativo en lugar de file-saver para mayor confiabilidad
+            const url = window.URL.createObjectURL(output);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = fileName;
+            link.style.display = 'none';
+            document.body.appendChild(link);
+            link.click();
+            setTimeout(() => {
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(url);
+            }, 100);
+
             UIService.showToast('¡Contrato generado exitosamente!', 'success');
             UIService.showNewContractButton();
             return true;
