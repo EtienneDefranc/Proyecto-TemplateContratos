@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 
 <head>
@@ -40,7 +40,7 @@
             <div class="stepper-progress">
                 <div class="step-indicator active" data-step="1">
                     <div class="step-number">1</div>
-                    <div class="step-label">Plantilla</div>
+                    <div class="step-label">Ciudad</div>
                 </div>
                 <div class="step-line"></div>
                 <div class="step-indicator" data-step="2">
@@ -70,22 +70,20 @@
             </div>
 
             <form id="contractForm" class="contract-form">
-                <!-- Step 1: Template Selection -->
+                <!-- Step 1: City Selection -->
                 <section class="form-section step-content active" data-step="1">
                     <h2 class="section-title">
-                        <span class="section-icon">📄</span>
-                        Plantilla del Contrato
+                        <span class="section-icon">🏙️</span>
+                        Ciudad de Contratación
                     </h2>
 
                     <div class="form-group">
-                        <label for="templateSelect">Seleccione una Plantilla</label>
-                        <select id="templateSelect" name="templateSelect" required>
-                            <option value="">-- Seleccione una plantilla --</option>
+                        <label for="citySelect">Seleccione la Ciudad</label>
+                        <select id="citySelect" name="citySelect" required>
+                            <option value="">-- Seleccione una ciudad --</option>
+                            <option value="Samborondón">Samborondón</option>
+                            <option value="Quito">Quito</option>
                         </select>
-                    </div>
-
-                    <div id="templateDescription" class="template-description hidden">
-                        <span class="description-text"></span>
                     </div>
                 </section>
 

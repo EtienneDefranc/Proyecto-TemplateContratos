@@ -12,31 +12,6 @@
 // ============================================
 // CONFIGURATION
 // ============================================
-const TemplateConfig = {
-    templates: [
-        {
-            id: 'samborondon_contrato',
-            name: 'Contrato Samborondón',
-            description: 'Contrato estándar de trabajo para Samborondón',
-            file: 'templates/Samborondon_Contrato.docx'
-        },
-        {
-            id: 'quito_contrato',
-            name: 'Contrato Quito',
-            description: 'Contrato estándar de trabajo para Quito',
-            file: 'templates/Quito_Contrato.docx'
-        }
-        // Add more templates here
-    ],
-
-    getTemplateById(id) {
-        return this.templates.find(t => t.id === id);
-    },
-
-    getAllTemplates() {
-        return this.templates;
-    }
-};
 
 const VariableConfig = {
     names: [
@@ -91,7 +66,7 @@ const PositionService = {
 const StepperConfig = {
     totalSteps: 6,
     stepValidation: {
-        1: ['templateSelect'],
+        1: ['citySelect'],
         2: ['contract_date'],
         3: ['name_worker', 'id_worker', 'mail_worker'],
         4: ['domicile_worker', 'city_name_worker', 'province_name_worker'],
@@ -390,38 +365,13 @@ const UIService = {
     init() {
         this.elements = {
             form: document.getElementById('contractForm'),
-            templateSelect: document.getElementById('templateSelect'),
+            citySelect: document.getElementById('citySelect'),
             generateBtn: document.getElementById('generateBtn'),
             newContractBtn: document.getElementById('newContractBtn'),
             toast: document.getElementById('toast'),
             prevBtn: document.getElementById('prevBtn'),
             nextBtn: document.getElementById('nextBtn')
         };
-    },
-
-    populateTemplates() {
-        const select = this.elements.templateSelect;
-        if (!select) return;
-        TemplateConfig.getAllTemplates().forEach(template => {
-            const option = document.createElement('option');
-            option.value = template.id;
-            option.textContent = template.name;
-            select.appendChild(option);
-        });
-    },
-
-    showTemplateDescription(templateId) {
-        const descriptionEl = document.getElementById('templateDescription');
-        if (!descriptionEl) return;
-        if (templateId) {
-            const template = TemplateConfig.getTemplateById(templateId);
-            if (template) {
-                descriptionEl.querySelector('.description-text').textContent = template.description;
-                descriptionEl.classList.remove('hidden');
-                return;
-            }
-        }
-        descriptionEl.classList.add('hidden');
     },
 
     updateDatePreview(dateData) {
@@ -517,9 +467,8 @@ const UIService = {
 // CONTRACT GENERATOR
 // ============================================
 const ContractGenerator = {
-    async generate(templateId) {
-        const template = TemplateConfig.getTemplateById(templateId);
-        if (!template) throw new Error('Plantilla no encontrada');
+    async generate(cityId) {
+        const templateFile = 'templates/template_contrato.docx';
 
         // Sincronizar campos ocultos antes de recolectar para evitar errores de validación si no se disparó el evento 'change'
         const dateInput = document.getElementById('contract_date')?.value;
@@ -536,9 +485,18 @@ const ContractGenerator = {
             document.getElementById('salary_value').value = converted.value;
             document.getElementById('salary_text').value = converted.text;
             document.getElementById('salary_cents_text').value = converted.cents;
-        }
-
         const formData = FormDataService.collect();
+        
+        // Agregar las variables dependiendo de la ciudad seleccionada
+        if (cityId === 'Samborondón') {
+            formData.city = 'Samborondón';
+            formData.city_working_place = 'Centro Comercial “Samborondón Plaza”, planta baja, local No. 13, Km. 1.5 vía a Samborondón, provincia del Guayas';
+            formData.province = 'Guayas';
+        } else if (cityId === 'Quito') {
+            formData.city = 'Quito';
+            formData.city_working_place = 'Eloy Alfaro y Amazonas';
+            formData.province = 'Pichincha';
+        }
         
         // Convertir la lista de funciones a un formato de array para permitir listas nativas en Word
         if (formData.enumerated_functions) {
@@ -560,7 +518,7 @@ const ContractGenerator = {
         UIService.setLoading(true);
 
         try {
-            const content = await TemplateService.fetchTemplate(template.file);
+            const content = await TemplateService.fetchTemplate(templateFile);
             const output = TemplateService.processTemplate(content, formData);
             const fileName = TemplateService.generateFileName(formData.name_worker);
 
@@ -594,9 +552,6 @@ const ContractGenerator = {
 // EVENT HANDLERS
 // ============================================
 const EventHandlers = {
-    onTemplateSelect(event) {
-        UIService.showTemplateDescription(event.target.value);
-    },
 
     onDateChange(event) {
         const value = event.target.value;
@@ -629,14 +584,14 @@ const EventHandlers = {
 
         if (!StepperService.validateCurrentStep()) return;
 
-        const templateId = UIService.elements.templateSelect?.value;
-        if (!templateId) {
-            UIService.showToast('Por favor seleccione una plantilla', 'error');
+        const cityId = UIService.elements.citySelect?.value;
+        if (!cityId) {
+            UIService.showToast('Por favor seleccione una ciudad', 'error');
             StepperService.goToStep(1);
             return;
         }
 
-        await ContractGenerator.generate(templateId);
+        await ContractGenerator.generate(cityId);
     },
 
     onStepIndicatorClick(event) {
@@ -694,9 +649,8 @@ const App = {
         PositionService.populateDropdown();
 
         // Bind events
-        const { templateSelect, form, prevBtn, nextBtn, newContractBtn } = UIService.elements;
+        const { form, prevBtn, nextBtn, newContractBtn } = UIService.elements;
 
-        templateSelect?.addEventListener('change', EventHandlers.onTemplateSelect);
         form?.addEventListener('submit', EventHandlers.onFormSubmit);
         prevBtn?.addEventListener('click', EventHandlers.onPrevClick);
         nextBtn?.addEventListener('click', EventHandlers.onNextClick);
