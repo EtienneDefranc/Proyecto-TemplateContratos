@@ -485,6 +485,8 @@ const ContractGenerator = {
             document.getElementById('salary_value').value = converted.value;
             document.getElementById('salary_text').value = converted.text;
             document.getElementById('salary_cents_text').value = converted.cents;
+        }
+        
         const formData = FormDataService.collect();
         
         // Agregar las variables dependiendo de la ciudad seleccionada
