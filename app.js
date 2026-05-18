@@ -70,7 +70,6 @@ const StepperConfig = {
         2: ['contract_date'],
         3: ['name_worker', 'id_worker', 'mail_worker'],
         4: ['domicile_worker', 'city_name_worker', 'province_name_worker'],
-        5: ['work_title', 'enumerated_functions'],
         6: ['salary_input']
     }
 };
@@ -493,7 +492,14 @@ const UIService = {
         // Clear previews
         this.clearPreview('datePreview');
         this.clearPreview('salaryPreview');
-        this.clearPreview('templateDescription');
+
+        // Reset position mode to predefined
+        const predefinedRadio = document.querySelector('input[name="position_mode"][value="predefined"]');
+        if (predefinedRadio) predefinedRadio.checked = true;
+        const predefinedSection = document.getElementById('predefined_section');
+        const manualSection = document.getElementById('manual_section');
+        if (predefinedSection) predefinedSection.style.display = 'block';
+        if (manualSection) manualSection.style.display = 'none';
 
         // Remove filled classes
         document.querySelectorAll('.filled').forEach(el => el.classList.remove('filled'));
