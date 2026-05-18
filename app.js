@@ -640,7 +640,6 @@ const EventHandlers = {
 const App = {
     async init() {
         UIService.init();
-        UIService.populateTemplates();
         UIService.addInputAnimations();
         StepperService.init();
 
