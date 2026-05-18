@@ -4,41 +4,41 @@
 
 /* CSS Variables */
 :root {
-    /* Primary Colors */
-    --primary-hue: 220;
+    /* Primary Colors (Teal) */
+    --primary-hue: 175;
     --primary-50: hsl(var(--primary-hue), 100%, 97%);
     --primary-100: hsl(var(--primary-hue), 100%, 94%);
     --primary-200: hsl(var(--primary-hue), 100%, 86%);
-    --primary-300: hsl(var(--primary-hue), 100%, 75%);
-    --primary-400: hsl(var(--primary-hue), 95%, 65%);
-    --primary-500: hsl(var(--primary-hue), 90%, 55%);
-    --primary-600: hsl(var(--primary-hue), 85%, 45%);
-    --primary-700: hsl(var(--primary-hue), 80%, 38%);
+    --primary-300: hsl(var(--primary-hue), 95%, 75%);
+    --primary-400: hsl(var(--primary-hue), 90%, 65%);
+    --primary-500: hsl(var(--primary-hue), 85%, 45%);
+    --primary-600: hsl(var(--primary-hue), 80%, 35%);
+    --primary-700: hsl(var(--primary-hue), 75%, 25%);
 
-    /* Accent Colors */
-    --accent-hue: 280;
-    --accent-400: hsl(var(--accent-hue), 85%, 65%);
-    --accent-500: hsl(var(--accent-hue), 80%, 55%);
+    /* Accent Colors (Amber/Gold for elegance) */
+    --accent-hue: 45;
+    --accent-400: hsl(var(--accent-hue), 95%, 65%);
+    --accent-500: hsl(var(--accent-hue), 90%, 55%);
 
-    /* Dark Theme Base */
-    --bg-primary: hsl(225, 25%, 8%);
-    --bg-secondary: hsl(225, 20%, 12%);
-    --bg-tertiary: hsl(225, 18%, 16%);
-    --bg-card: hsla(225, 25%, 14%, 0.8);
+    /* Dark Theme Base (Slate/Midnight) */
+    --bg-primary: #020617; /* Slate 950 */
+    --bg-secondary: #0f172a; /* Slate 900 */
+    --bg-tertiary: #1e293b; /* Slate 800 */
+    --bg-card: rgba(15, 23, 42, 0.7);
 
     /* Text Colors */
-    --text-primary: hsl(220, 20%, 95%);
-    --text-secondary: hsl(220, 15%, 70%);
-    --text-muted: hsl(220, 10%, 50%);
+    --text-primary: #f8fafc; /* Slate 50 */
+    --text-secondary: #cbd5e1; /* Slate 300 */
+    --text-muted: #94a3b8; /* Slate 400 */
 
     /* Glass Effect */
-    --glass-bg: rgba(255, 255, 255, 0.03);
-    --glass-border: rgba(255, 255, 255, 0.08);
-    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    --glass-bg: rgba(255, 255, 255, 0.02);
+    --glass-border: rgba(255, 255, 255, 0.05);
+    --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
 
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, var(--primary-500), var(--accent-500));
-    --gradient-subtle: linear-gradient(135deg, var(--primary-600), var(--accent-400));
+    --gradient-primary: linear-gradient(135deg, var(--primary-500), #0ea5e9);
+    --gradient-subtle: linear-gradient(135deg, var(--bg-tertiary), var(--bg-secondary));
 
     /* Spacing */
     --space-xs: 0.25rem;
@@ -49,8 +49,8 @@
     --space-2xl: 3rem;
 
     /* Border Radius */
-    --radius-sm: 8px;
-    --radius-md: 12px;
+    --radius-sm: 6px;
+    --radius-md: 10px;
     --radius-lg: 16px;
     --radius-xl: 24px;
 
@@ -97,14 +97,14 @@ body {
 .gradient-orb {
     position: absolute;
     border-radius: 50%;
-    filter: blur(100px);
-    opacity: 0.4;
-    animation: float 20s ease-in-out infinite;
+    filter: blur(140px);
+    opacity: 0.15;
+    animation: float 25s ease-in-out infinite;
 }
 
 .gradient-orb-1 {
-    width: 600px;
-    height: 600px;
+    width: 700px;
+    height: 700px;
     background: var(--primary-500);
     top: -200px;
     right: -100px;
@@ -112,20 +112,20 @@ body {
 }
 
 .gradient-orb-2 {
-    width: 500px;
-    height: 500px;
-    background: var(--accent-500);
+    width: 600px;
+    height: 600px;
+    background: #0ea5e9;
     bottom: -150px;
     left: -100px;
     animation-delay: -7s;
 }
 
 .gradient-orb-3 {
-    width: 400px;
-    height: 400px;
-    background: linear-gradient(135deg, var(--primary-400), var(--accent-400));
-    top: 50%;
-    left: 50%;
+    width: 500px;
+    height: 500px;
+    background: linear-gradient(135deg, var(--bg-tertiary), var(--primary-700));
+    top: 40%;
+    left: 40%;
     transform: translate(-50%, -50%);
     animation-delay: -14s;
 }
@@ -236,12 +236,13 @@ body {
 /* Form Section */
 .form-section {
     background: var(--bg-card);
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
     border: 1px solid var(--glass-border);
     border-radius: var(--radius-lg);
     padding: var(--space-xl);
     box-shadow: var(--glass-shadow);
-    animation: fadeInUp 0.5s ease-out backwards;
+    animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) backwards;
 }
 
 .form-section:nth-child(1) {
@@ -333,14 +334,15 @@ body {
 
 .form-group input,
 .form-group textarea {
-    background: var(--bg-tertiary);
+    background: var(--bg-secondary);
     border: 1px solid var(--glass-border);
     border-radius: var(--radius-sm);
     padding: var(--space-md);
-    font-size: 1rem;
+    font-size: 0.95rem;
     color: var(--text-primary);
     font-family: inherit;
     transition: all var(--transition-normal);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .form-group input::placeholder,
@@ -356,8 +358,9 @@ body {
 .form-group input:focus,
 .form-group textarea:focus {
     outline: none;
-    border-color: var(--primary-400);
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+    border-color: var(--primary-500);
+    background: var(--bg-tertiary);
+    box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.2);
 }
 
 .form-group textarea {
@@ -475,11 +478,11 @@ input[type="file"] {
     border: none;
     border-radius: var(--radius-xl);
     font-size: 1.1rem;
-    font-weight: 600;
+    font-weight: 500;
     color: white;
     cursor: pointer;
     transition: all var(--transition-normal);
-    box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
+    box-shadow: 0 4px 15px rgba(14, 165, 233, 0.25);
     position: relative;
     overflow: hidden;
 }
@@ -500,7 +503,7 @@ input[type="file"] {
 
 .btn-generate:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 30px rgba(99, 102, 241, 0.4);
+    box-shadow: 0 8px 25px rgba(14, 165, 233, 0.4);
 }
 
 .btn-generate:hover::before {
@@ -687,11 +690,11 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 /* Template Select Dropdown */
 select {
-    background: var(--bg-tertiary);
+    background: var(--bg-secondary);
     border: 1px solid var(--glass-border);
     border-radius: var(--radius-sm);
     padding: var(--space-md);
-    font-size: 1rem;
+    font-size: 0.95rem;
     color: var(--text-primary);
     font-family: inherit;
     cursor: pointer;
@@ -702,6 +705,7 @@ select {
     background-repeat: no-repeat;
     background-position: right var(--space-md) center;
     background-size: 20px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 select:hover {
@@ -710,8 +714,9 @@ select:hover {
 
 select:focus {
     outline: none;
-    border-color: var(--primary-400);
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+    border-color: var(--primary-500);
+    background: var(--bg-tertiary);
+    box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.2);
 }
 
 select option {
