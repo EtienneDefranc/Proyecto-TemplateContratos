@@ -175,30 +175,47 @@
                         Información Laboral
                     </h2>
 
+                    <!-- Position Mode Selector -->
+                    <div class="form-group position-mode-selector">
+                        <label>Tipo de Ingreso</label>
+                        <div class="radio-group" style="display: flex; gap: 1rem; margin-top: 0.5rem; margin-bottom: 1rem;">
+                            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; color: var(--text-primary);">
+                                <input type="radio" name="position_mode" value="predefined" checked>
+                                Cargo Predefinido
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; color: var(--text-primary);">
+                                <input type="radio" name="position_mode" value="manual">
+                                Ingreso Manual
+                            </label>
+                        </div>
+                    </div>
+
                     <!-- Predefined Position Selector -->
-                    <div class="form-group">
-                        <label for="positionSelect">Seleccionar Cargo Predefinido</label>
-                        <select id="positionSelect" name="positionSelect">
-                            <option value="">-- Personalizar cargo manualmente --</option>
-                        </select>
+                    <div id="predefined_section">
+                        <div class="form-group">
+                            <label for="positionSelect">Seleccionar Cargo</label>
+                            <select id="positionSelect" name="positionSelect">
+                                <option value="">-- Seleccione un cargo --</option>
+                            </select>
+                        </div>
                     </div>
 
-                    <div class="position-divider">
-                        <span>Datos del cargo</span>
-                    </div>
+                    <!-- Manual Input Section -->
+                    <div id="manual_section" style="display: none;">
+                        <div class="position-divider">
+                            <span>Datos del cargo manual</span>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="work_title">Cargo / Título del Puesto</label>
-                        <input type="text" id="work_title" name="work_title"
-                            placeholder="Ej: Desarrollador de Software Senior" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="enumerated_functions">Funciones del Cargo</label>
-                        <textarea id="enumerated_functions" name="enumerated_functions" rows="6"
-                            placeholder="Ej: 1. Desarrollo de aplicaciones web&#10;2. Análisis de requerimientos&#10;3. Soporte técnico"
-                            required></textarea>
-                        <span class="form-hint">Puede editar las funciones después de seleccionar un cargo
-                            predefinido</span>
+                        <div class="form-group">
+                            <label for="work_title">Cargo / Título del Puesto</label>
+                            <input type="text" id="work_title" name="work_title"
+                                placeholder="Ej: Desarrollador de Software Senior">
+                        </div>
+                        <div class="form-group">
+                            <label for="enumerated_functions">Funciones del Cargo</label>
+                            <textarea id="enumerated_functions" name="enumerated_functions" rows="6"
+                                placeholder="Ej: 1. Desarrollo de aplicaciones web&#10;2. Análisis de requerimientos&#10;3. Soporte técnico"></textarea>
+                        </div>
                     </div>
                 </section>
 

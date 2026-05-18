@@ -194,6 +194,20 @@ const FormDataService = {
             const input = document.getElementById(name);
             if (input) data[name] = input.value.trim();
         });
+
+        // Override with predefined values if in predefined mode
+        const modeRadio = document.querySelector('input[name="position_mode"]:checked');
+        if (modeRadio && modeRadio.value === 'predefined') {
+            const positionSelect = document.getElementById('positionSelect');
+            if (positionSelect && positionSelect.value) {
+                const position = PositionService.getPositionById(positionSelect.value);
+                if (position) {
+                    data['work_title'] = position.title;
+                    data['enumerated_functions'] = position.functions;
+                }
+            }
+        }
+
         if (data.name_worker) {
             data.name_worker = data.name_worker.toUpperCase();
         }
@@ -277,6 +291,33 @@ const StepperService = {
     },
 
     validateCurrentStep() {
+        if (this.currentStep === 5) {
+            const mode = document.querySelector('input[name="position_mode"]:checked').value;
+            if (mode === 'predefined') {
+                const positionSelect = document.getElementById('positionSelect');
+                if (!positionSelect.value) {
+                    UIService.showToast('Por favor seleccione un cargo predefinido', 'error');
+                    positionSelect.focus();
+                    return false;
+                }
+                return true;
+            } else {
+                const workTitle = document.getElementById('work_title');
+                const functions = document.getElementById('enumerated_functions');
+                if (!workTitle.value.trim()) {
+                    UIService.showToast('Por favor ingrese el Cargo', 'error');
+                    workTitle.focus();
+                    return false;
+                }
+                if (!functions.value.trim()) {
+                    UIService.showToast('Por favor ingrese las Funciones', 'error');
+                    functions.focus();
+                    return false;
+                }
+                return true;
+            }
+        }
+
         const fields = StepperConfig.stepValidation[this.currentStep] || [];
         for (const fieldId of fields) {
             const element = document.getElementById(fieldId);
@@ -468,7 +509,15 @@ const UIService = {
 // ============================================
 const ContractGenerator = {
     async generate(cityId) {
-        const templateFile = 'templates/template_contrato.docx';
+        let templateFile = 'templates/template_contrato.docx';
+        
+        const modeRadio = document.querySelector('input[name="position_mode"]:checked');
+        if (modeRadio && modeRadio.value === 'predefined') {
+            const positionSelect = document.getElementById('positionSelect');
+            if (positionSelect && positionSelect.value === 'vendedor_promotor') {
+                templateFile = 'templates/template_contrato_vendedores.docx';
+            }
+        }
 
         // Sincronizar campos ocultos antes de recolectar para evitar errores de validación si no se disparó el evento 'change'
         const dateInput = document.getElementById('contract_date')?.value;
@@ -614,6 +663,7 @@ const EventHandlers = {
     },
 
     onPositionSelect(event) {
+        // Just used for filling when predefined, the collect function ensures correct logic
         const positionId = event.target.value;
         const workTitleInput = document.getElementById('work_title');
         const functionsInput = document.getElementById('enumerated_functions');
@@ -626,12 +676,20 @@ const EventHandlers = {
                 workTitleInput.classList.add('filled');
                 functionsInput.classList.add('filled');
             }
+        }
+    },
+
+    onPositionModeChange(event) {
+        const mode = event.target.value;
+        const predefinedSection = document.getElementById('predefined_section');
+        const manualSection = document.getElementById('manual_section');
+        
+        if (mode === 'predefined') {
+            predefinedSection.style.display = 'block';
+            manualSection.style.display = 'none';
         } else {
-            // Clear fields for manual entry
-            workTitleInput.value = '';
-            functionsInput.value = '';
-            workTitleInput.classList.remove('filled');
-            functionsInput.classList.remove('filled');
+            predefinedSection.style.display = 'none';
+            manualSection.style.display = 'block';
         }
     }
 };
@@ -664,6 +722,10 @@ const App = {
         // Step indicator clicks
         document.querySelectorAll('.step-indicator').forEach(indicator => {
             indicator.addEventListener('click', EventHandlers.onStepIndicatorClick);
+        });
+
+        document.querySelectorAll('input[name="position_mode"]').forEach(radio => {
+            radio.addEventListener('change', EventHandlers.onPositionModeChange);
         });
     }
 };
