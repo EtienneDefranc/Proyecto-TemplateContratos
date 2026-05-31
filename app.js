@@ -522,6 +522,8 @@ const ContractGenerator = {
             const positionSelect = document.getElementById('positionSelect');
             if (positionSelect && positionSelect.value === 'vendedor_promotor') {
                 templateFile = 'templates/template_contrato_vendedores.docx';
+            } else if (positionSelect && positionSelect.value === 'instructor_capacitador') {
+                templateFile = 'templates/template_contrato_instructor.docx';
             }
         }
 
