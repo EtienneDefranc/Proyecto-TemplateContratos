@@ -19,7 +19,9 @@ def update_template(input_file, output_file):
         "jueces multicompetentes del cantón Samborondón, provincia del Guayas": "jueces multicompetentes del cantón {city}, provincia de {province}",
         "HUGO G. LOPEZ GOMEZ    ____________________________": "HUGO G. LOPEZ GOMEZ    {name_worker}",
         "PRESIDENTE    C.C. No. ___________________": "PRESIDENTE    C.C. No. {id_worker}",
-        "fuera de la provincia de Guayas": "fuera de la provincia de {province}"
+        "fuera de la provincia de Guayas": "fuera de la provincia de {province}",
+        "cargo de VENDEDOR(A)-PROMOTOR(A)": "cargo de {work_title}",
+        "unificada de CUATROCIENTOS NOVENTA Y TRES 90/100 DÓLARES DE LOS ESTADOS UNIDOS DE AMÉRICA (US$493.90)": "unificada de {salary_text} {salary_cents_text} DÓLARES DE LOS ESTADOS UNIDOS DE AMÉRICA (US${salary_value})"
     }
 
     # Handling the functions list

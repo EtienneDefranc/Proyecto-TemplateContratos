@@ -532,6 +532,14 @@ const ContractGenerator = {
     async generate(cityId) {
         let templateFile = 'templates/template_contrato.docx';
 
+        const modeRadio = document.querySelector('input[name="position_mode"]:checked');
+        if (modeRadio && modeRadio.value === 'predefined') {
+            const positionSelect = document.getElementById('positionSelect');
+            if (positionSelect && positionSelect.value === 'vendedor_promotor') {
+                templateFile = 'templates/template_contrato_vendedor.docx';
+            }
+        }
+
         // Sincronizar campos ocultos antes de recolectar para evitar errores de validación si no se disparó el evento 'change'
         const dateInput = document.getElementById('contract_date')?.value;
         if (dateInput) {
