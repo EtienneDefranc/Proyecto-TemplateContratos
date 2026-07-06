@@ -17,9 +17,11 @@ const VariableConfig = {
     names: [
         'day_number_text', 'month_text', 'year_text',
         'name_worker', 'id_worker', 'work_title',
-        'enumerated_functions', 'domicile_worker',
+        'enumerated_functions', 'domicile_worker', 'domicile_reference',
         'city_name_worker', 'province_name_worker',
-        'mail_worker', 'salary_text', 'salary_cents_text', 'salary_value'
+        'mail_worker', 'salary_text', 'salary_cents_text', 'salary_value',
+        'start_time_weekday', 'end_time_weekday', 'break_minutes_weekday',
+        'start_time_saturday', 'end_time_saturday', 'province'
     ]
 };
 
@@ -66,10 +68,10 @@ const PositionService = {
 const StepperConfig = {
     totalSteps: 6,
     stepValidation: {
-        1: ['citySelect'],
+        1: ['citySelect', 'province'],
         2: ['contract_date'],
         3: ['name_worker', 'id_worker', 'mail_worker'],
-        4: ['domicile_worker', 'city_name_worker', 'province_name_worker'],
+        4: ['domicile_worker', 'domicile_reference', 'city_name_worker', 'province_name_worker'],
         6: ['salary_input']
     }
 };
@@ -317,6 +319,19 @@ const StepperService = {
             }
         }
 
+        if (this.currentStep === 5) {
+            const scheduleFields = ['start_time_weekday', 'end_time_weekday', 'break_minutes_weekday', 'start_time_saturday', 'end_time_saturday'];
+            for (const fieldId of scheduleFields) {
+                const element = document.getElementById(fieldId);
+                if (!element || !element.value.trim()) {
+                    const label = element?.previousElementSibling?.textContent || fieldId;
+                    UIService.showToast(`Por favor complete: ${label}`, 'error');
+                    element?.focus();
+                    return false;
+                }
+            }
+        }
+
         const fields = StepperConfig.stepValidation[this.currentStep] || [];
         for (const fieldId of fields) {
             const element = document.getElementById(fieldId);
@@ -516,16 +531,6 @@ const UIService = {
 const ContractGenerator = {
     async generate(cityId) {
         let templateFile = 'templates/template_contrato.docx';
-        
-        const modeRadio = document.querySelector('input[name="position_mode"]:checked');
-        if (modeRadio && modeRadio.value === 'predefined') {
-            const positionSelect = document.getElementById('positionSelect');
-            if (positionSelect && positionSelect.value === 'vendedor_promotor') {
-                templateFile = 'templates/template_contrato_vendedores.docx';
-            } else if (positionSelect && positionSelect.value === 'instructor_capacitador') {
-                templateFile = 'templates/template_contrato_instructor.docx';
-            }
-        }
 
         // Sincronizar campos ocultos antes de recolectar para evitar errores de validación si no se disparó el evento 'change'
         const dateInput = document.getElementById('contract_date')?.value;
@@ -549,12 +554,10 @@ const ContractGenerator = {
         // Agregar las variables dependiendo de la ciudad seleccionada
         if (cityId === 'Samborondón') {
             formData.city = 'Samborondón';
-            formData.city_working_place = 'Centro Comercial “Samborondón Plaza”, planta baja, local No. 13, Km. 1.5 vía a Samborondón, provincia del Guayas';
-            formData.province = 'Guayas';
+            formData.city_working_place = 'Centro Comercial “Samborondón Plaza”, planta baja, local No. 13, Km. 1.5 vía a Samborondón, provincia de ' + formData.province;
         } else if (cityId === 'Quito') {
             formData.city = 'Quito';
             formData.city_working_place = 'Eloy Alfaro y Amazonas';
-            formData.province = 'Pichincha';
         }
         
         // Convertir la lista de funciones a un formato de array para permitir listas nativas en Word
@@ -564,6 +567,14 @@ const ContractGenerator = {
                 .map(line => line.replace(/^[0-9]+[\.\-\)]\s*/, '').trim())
                 .filter(line => line.length > 0)
                 .map(line => ({ item: line }));
+        }
+
+        // Convertir minutos de descanso a texto
+        if (formData.break_minutes_weekday) {
+            const minutes = parseInt(formData.break_minutes_weekday);
+            if (!isNaN(minutes)) {
+                formData.break_minutes_weekday_text = SpanishNumberConverter.convert(minutes);
+            }
         }
 
         const validation = FormDataService.validate(formData);
