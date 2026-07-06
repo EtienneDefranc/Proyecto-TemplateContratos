@@ -427,6 +427,29 @@ const UIService = {
             prevBtn: document.getElementById('prevBtn'),
             nextBtn: document.getElementById('nextBtn')
         };
+        this.initTimeSelects();
+    },
+
+    initTimeSelects() {
+        const timeSelects = ['start_time_weekday', 'end_time_weekday', 'start_time_saturday', 'end_time_saturday'];
+        const options = ['<option value="">-- Seleccione --</option>'];
+        
+        for (let h = 0; h < 24; h++) {
+            for (let m = 0; m < 60; m += 10) {
+                const hour = h.toString().padStart(2, '0');
+                const min = m.toString().padStart(2, '0');
+                const timeStr = `${hour}:${min}`;
+                options.push(`<option value="${timeStr}">${timeStr}</option>`);
+            }
+        }
+        
+        const optionsHtml = options.join('');
+        timeSelects.forEach(id => {
+            const select = document.getElementById(id);
+            if (select) {
+                select.innerHTML = optionsHtml;
+            }
+        });
     },
 
     updateDatePreview(dateData) {
