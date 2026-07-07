@@ -565,10 +565,10 @@ const ContractGenerator = {
         
         // Agregar las variables dependiendo de la ciudad seleccionada
         if (cityId === 'Samborondón') {
-            formData.city = 'Samborondón';
+            formData.city = 'Samborondón'.toUpperCase();
             formData.city_working_place = 'Centro Comercial “Samborondón Plaza”, planta baja, local No. 13, Km. 1.5 vía a Samborondón, provincia de ' + formData.province;
         } else if (cityId === 'Quito') {
-            formData.city = 'Quito';
+            formData.city = 'Quito'.toUpperCase();
             formData.city_working_place = 'Eloy Alfaro y Amazonas';
         }
         
