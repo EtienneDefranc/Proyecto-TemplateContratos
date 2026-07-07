@@ -5,125 +5,136 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
-        content="Generador de contratos para Samborondón - Complete los datos del trabajador y genere contratos en formato DOCX">
-    <title>Generador de Contratos - Samborondón</title>
+        content="Generador de contratos laborales — Complete los datos del trabajador y genere contratos en formato DOCX">
+    <title>Generador de Contratos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    <div class="background-effects">
+    <!-- Ambient background -->
+    <div class="background-effects" aria-hidden="true">
         <div class="gradient-orb gradient-orb-1"></div>
         <div class="gradient-orb gradient-orb-2"></div>
         <div class="gradient-orb gradient-orb-3"></div>
     </div>
 
     <div class="container">
+
+        <!-- ── Header ──────────────────────────── -->
         <header class="header">
             <div class="logo">
                 <div class="logo-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                        <polyline points="14 2 14 8 20 8" />
-                        <line x1="16" y1="13" x2="8" y2="13" />
-                        <line x1="16" y1="17" x2="8" y2="17" />
-                        <polyline points="10 9 9 9 8 9" />
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                        <line x1="16" y1="13" x2="8" y2="13"/>
+                        <line x1="16" y1="17" x2="8" y2="17"/>
+                        <polyline points="10 9 9 9 8 9"/>
                     </svg>
                 </div>
                 <h1>Generador de Contratos</h1>
             </div>
-            <p class="subtitle">Complete los datos del trabajador para generar el contrato</p>
+            <p class="subtitle">Complete los datos del trabajador para generar el contrato laboral</p>
         </header>
 
         <main class="main-content">
-            <!-- Stepper Progress Indicator -->
-            <div class="stepper-progress">
-                <div class="step-indicator active" data-step="1">
+
+            <!-- ── Stepper ─────────────────────── -->
+            <nav class="stepper-progress" aria-label="Progreso del formulario">
+                <div class="step-indicator active" data-step="1" role="button" tabindex="0" aria-label="Paso 1: Ciudad">
                     <div class="step-number">1</div>
                     <div class="step-label">Ciudad</div>
                 </div>
                 <div class="step-line"></div>
-                <div class="step-indicator" data-step="2">
+                <div class="step-indicator" data-step="2" role="button" tabindex="0" aria-label="Paso 2: Fecha">
                     <div class="step-number">2</div>
                     <div class="step-label">Fecha</div>
                 </div>
                 <div class="step-line"></div>
-                <div class="step-indicator" data-step="3">
+                <div class="step-indicator" data-step="3" role="button" tabindex="0" aria-label="Paso 3: Trabajador">
                     <div class="step-number">3</div>
                     <div class="step-label">Trabajador</div>
                 </div>
                 <div class="step-line"></div>
-                <div class="step-indicator" data-step="4">
+                <div class="step-indicator" data-step="4" role="button" tabindex="0" aria-label="Paso 4: Dirección">
                     <div class="step-number">4</div>
                     <div class="step-label">Dirección</div>
                 </div>
                 <div class="step-line"></div>
-                <div class="step-indicator" data-step="5">
+                <div class="step-indicator" data-step="5" role="button" tabindex="0" aria-label="Paso 5: Laboral">
                     <div class="step-number">5</div>
                     <div class="step-label">Laboral</div>
                 </div>
                 <div class="step-line"></div>
-                <div class="step-indicator" data-step="6">
+                <div class="step-indicator" data-step="6" role="button" tabindex="0" aria-label="Paso 6: Salario">
                     <div class="step-number">6</div>
                     <div class="step-label">Salario</div>
                 </div>
-            </div>
+            </nav>
 
-            <form id="contractForm" class="contract-form">
-                <!-- Step 1: City Selection -->
+            <!-- ── Form ────────────────────────── -->
+            <form id="contractForm" class="contract-form" novalidate>
+
+                <!-- Step 1 · Ciudad -->
                 <section class="form-section step-content active" data-step="1">
                     <h2 class="section-title">
                         <span class="section-icon">🏙️</span>
                         Ciudad de Contratación
                     </h2>
-
-                    <div class="form-group">
-                        <label for="citySelect">Seleccione la Ciudad</label>
-                        <select id="citySelect" name="citySelect" required>
-                            <option value="">-- Seleccione una ciudad --</option>
-                            <option value="Samborondón">Samborondón</option>
-                            <option value="Quito">Quito</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="province">Provincia de Contratación</label>
-                        <input type="text" id="province" name="province" placeholder="Ej: Guayas" required>
+                    <div class="form-grid form-grid-2">
+                        <div class="form-group">
+                            <label for="citySelect">Ciudad</label>
+                            <select id="citySelect" name="citySelect" required>
+                                <option value="">Seleccione una ciudad…</option>
+                                <option value="Samborondón">Samborondón</option>
+                                <option value="Quito">Quito</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="province">Provincia</label>
+                            <input type="text" id="province" name="province" placeholder="Ej: Guayas" required>
+                        </div>
                     </div>
                 </section>
 
-                <!-- Step 2: Date -->
+                <!-- Step 2 · Fecha -->
                 <section class="form-section step-content" data-step="2">
                     <h2 class="section-title">
                         <span class="section-icon">📅</span>
                         Fecha del Contrato
                     </h2>
                     <div class="form-group">
-                        <label for="contract_date">Seleccione la Fecha</label>
+                        <label for="contract_date">Fecha de inicio</label>
                         <input type="date" id="contract_date" name="contract_date" required>
                     </div>
-                    <div id="datePreview" class="date-preview hidden">
-                        <div class="preview-title">Vista previa de la fecha:</div>
+
+                    <div id="datePreview" class="date-preview hidden" aria-live="polite">
+                        <div class="preview-title">Vista previa en texto</div>
                         <div class="preview-grid">
                             <div class="preview-item">
-                                <span class="preview-label">Día:</span>
-                                <span id="dayPreview" class="preview-value">-</span>
+                                <span class="preview-label">Día</span>
+                                <span id="dayPreview" class="preview-value">—</span>
                             </div>
                             <div class="preview-item">
-                                <span class="preview-label">Mes:</span>
-                                <span id="monthPreview" class="preview-value">-</span>
+                                <span class="preview-label">Mes</span>
+                                <span id="monthPreview" class="preview-value">—</span>
                             </div>
                             <div class="preview-item">
-                                <span class="preview-label">Año:</span>
-                                <span id="yearPreview" class="preview-value">-</span>
+                                <span class="preview-label">Año</span>
+                                <span id="yearPreview" class="preview-value">—</span>
                             </div>
                         </div>
                     </div>
+
                     <input type="hidden" id="day_number_text" name="day_number_text">
                     <input type="hidden" id="month_text" name="month_text">
                     <input type="hidden" id="year_text" name="year_text">
                 </section>
 
-                <!-- Step 3: Worker Information -->
+                <!-- Step 3 · Trabajador -->
                 <section class="form-section step-content" data-step="3">
                     <h2 class="section-title">
                         <span class="section-icon">👤</span>
@@ -132,22 +143,23 @@
                     <div class="form-grid form-grid-2">
                         <div class="form-group">
                             <label for="name_worker">Nombre Completo</label>
-                            <input type="text" id="name_worker" name="name_worker" placeholder="Ej: Juan Pérez García"
-                                required>
+                            <input type="text" id="name_worker" name="name_worker"
+                                placeholder="Ej: Juan Pérez García" required>
                         </div>
                         <div class="form-group">
                             <label for="id_worker">Cédula / Identificación</label>
-                            <input type="text" id="id_worker" name="id_worker" placeholder="Ej: 0912345678" required>
+                            <input type="text" id="id_worker" name="id_worker"
+                                placeholder="Ej: 0912345678" required>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" style="margin-top: var(--sp-5);">
                         <label for="mail_worker">Correo Electrónico</label>
-                        <input type="email" id="mail_worker" name="mail_worker" placeholder="Ej: juan.perez@email.com"
-                            required>
+                        <input type="email" id="mail_worker" name="mail_worker"
+                            placeholder="Ej: juan.perez@email.com" required>
                     </div>
                 </section>
 
-                <!-- Step 4: Address -->
+                <!-- Step 4 · Dirección -->
                 <section class="form-section step-content" data-step="4">
                     <h2 class="section-title">
                         <span class="section-icon">🏠</span>
@@ -156,18 +168,18 @@
                     <div class="form-group">
                         <label for="domicile_worker">Domicilio</label>
                         <input type="text" id="domicile_worker" name="domicile_worker"
-                            placeholder="Ej: Av. Principal 123, Urbanización Los Ceibos" required>
+                            placeholder="Ej: Av. Principal 123, Urb. Los Ceibos" required>
                     </div>
-                    <div class="form-group">
-                        <label for="domicile_reference">Referencia del Domicilio</label>
+                    <div class="form-group" style="margin-top: var(--sp-5);">
+                        <label for="domicile_reference">Referencia</label>
                         <input type="text" id="domicile_reference" name="domicile_reference"
                             placeholder="Ej: Frente al parque central" required>
                     </div>
-                    <div class="form-grid form-grid-2">
+                    <div class="form-grid form-grid-2" style="margin-top: var(--sp-5);">
                         <div class="form-group">
                             <label for="city_name_worker">Ciudad</label>
-                            <input type="text" id="city_name_worker" name="city_name_worker" placeholder="Ej: Guayaquil"
-                                required>
+                            <input type="text" id="city_name_worker" name="city_name_worker"
+                                placeholder="Ej: Guayaquil" required>
                         </div>
                         <div class="form-group">
                             <label for="province_name_worker">Provincia</label>
@@ -177,165 +189,168 @@
                     </div>
                 </section>
 
-                <!-- Step 5: Job Information -->
+                <!-- Step 5 · Laboral -->
                 <section class="form-section step-content" data-step="5">
                     <h2 class="section-title">
                         <span class="section-icon">💼</span>
                         Información Laboral
                     </h2>
 
-                    <!-- Position Mode Selector -->
+                    <!-- Tipo de ingreso -->
                     <div class="form-group position-mode-selector">
                         <label>Tipo de Ingreso</label>
-                        <div class="radio-group" style="display: flex; gap: 1rem; margin-top: 0.5rem; margin-bottom: 1rem;">
-                            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; color: var(--text-primary);">
+                        <div class="radio-group" id="positionModeGroup">
+                            <label id="lbl-predefined">
                                 <input type="radio" name="position_mode" value="predefined" checked>
                                 Cargo Predefinido
                             </label>
-                            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; color: var(--text-primary);">
+                            <label id="lbl-manual">
                                 <input type="radio" name="position_mode" value="manual">
                                 Ingreso Manual
                             </label>
                         </div>
                     </div>
 
-                    <!-- Predefined Position Selector -->
+                    <!-- Cargo predefinido -->
                     <div id="predefined_section">
                         <div class="form-group">
                             <label for="positionSelect">Seleccionar Cargo</label>
                             <select id="positionSelect" name="positionSelect">
-                                <option value="">-- Seleccione un cargo --</option>
+                                <option value="">Seleccione un cargo…</option>
                             </select>
                         </div>
                     </div>
 
-                    <!-- Manual Input Section -->
+                    <!-- Ingreso manual -->
                     <div id="manual_section" style="display: none;">
-                        <div class="position-divider">
-                            <span>Datos del cargo manual</span>
-                        </div>
-
+                        <div class="position-divider"><span>Datos del cargo</span></div>
                         <div class="form-group">
                             <label for="work_title">Cargo / Título del Puesto</label>
                             <input type="text" id="work_title" name="work_title"
                                 placeholder="Ej: Desarrollador de Software Senior">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" style="margin-top: var(--sp-5);">
                             <label for="enumerated_functions">Funciones del Cargo</label>
                             <textarea id="enumerated_functions" name="enumerated_functions" rows="6"
                                 placeholder="Ej: 1. Desarrollo de aplicaciones web&#10;2. Análisis de requerimientos&#10;3. Soporte técnico"></textarea>
                         </div>
                     </div>
 
-                    <div class="position-divider" style="margin-top: 2rem;">
-                        <span>Horario de Trabajo (Contrato Productivo)</span>
-                    </div>
-                    
-                    <div class="form-grid form-grid-2">
-                        <div class="form-group">
-                            <label for="start_time_weekday">Entrada (Lunes a Viernes)</label>
-                            <input type="time" id="start_time_weekday" name="start_time_weekday" step="600" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="end_time_weekday">Salida (Lunes a Viernes)</label>
-                            <input type="time" id="end_time_weekday" name="end_time_weekday" step="600" required>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="break_minutes_weekday">Minutos de descanso diario</label>
-                        <input type="number" id="break_minutes_weekday" name="break_minutes_weekday" placeholder="Ej: 60" min="0" required>
-                    </div>
+                    <!-- Horario -->
+                    <div class="position-divider" style="margin-top: var(--sp-6);"><span>Horario de Trabajo</span></div>
 
                     <div class="form-grid form-grid-2">
                         <div class="form-group">
-                            <label for="start_time_saturday">Entrada (Sábado)</label>
+                            <label for="start_time_weekday">Entrada · Lunes a Viernes</label>
+                            <input type="time" id="start_time_weekday" name="start_time_weekday" step="600" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="end_time_weekday">Salida · Lunes a Viernes</label>
+                            <input type="time" id="end_time_weekday" name="end_time_weekday" step="600" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-top: var(--sp-5);">
+                        <label for="break_minutes_weekday">Minutos de descanso diario</label>
+                        <input type="number" id="break_minutes_weekday" name="break_minutes_weekday"
+                            placeholder="Ej: 60" min="0" required>
+                    </div>
+
+                    <div class="form-grid form-grid-2" style="margin-top: var(--sp-5);">
+                        <div class="form-group">
+                            <label for="start_time_saturday">Entrada · Sábado</label>
                             <input type="time" id="start_time_saturday" name="start_time_saturday" step="600" required>
                         </div>
                         <div class="form-group">
-                            <label for="end_time_saturday">Salida (Sábado)</label>
+                            <label for="end_time_saturday">Salida · Sábado</label>
                             <input type="time" id="end_time_saturday" name="end_time_saturday" step="600" required>
                         </div>
                     </div>
                 </section>
 
-                <!-- Step 6: Salary -->
+                <!-- Step 6 · Salario -->
                 <section class="form-section step-content" data-step="6">
                     <h2 class="section-title">
                         <span class="section-icon">💰</span>
                         Información Salarial
                     </h2>
                     <div class="form-group">
-                        <label for="salary_input">Salario (USD)</label>
-                        <input type="number" id="salary_input" name="salary_input" placeholder="Ej: 1500.50" step="0.01"
-                            min="0" required>
+                        <label for="salary_input">Salario mensual (USD)</label>
+                        <input type="number" id="salary_input" name="salary_input"
+                            placeholder="Ej: 1500.50" step="0.01" min="0" required>
                     </div>
-                    <div id="salaryPreview" class="date-preview hidden">
-                        <div class="preview-title">Vista previa del salario:</div>
+
+                    <div id="salaryPreview" class="date-preview hidden" aria-live="polite">
+                        <div class="preview-title">Vista previa en texto</div>
                         <div class="preview-grid">
                             <div class="preview-item">
-                                <span class="preview-label">Valor:</span>
-                                <span id="salaryValuePreview" class="preview-value">-</span>
+                                <span class="preview-label">Valor</span>
+                                <span id="salaryValuePreview" class="preview-value">—</span>
                             </div>
                             <div class="preview-item">
-                                <span class="preview-label">En letras:</span>
-                                <span id="salaryTextPreview" class="preview-value">-</span>
+                                <span class="preview-label">En letras</span>
+                                <span id="salaryTextPreview" class="preview-value">—</span>
                             </div>
                             <div class="preview-item">
-                                <span class="preview-label">Centavos:</span>
-                                <span id="salaryCentsPreview" class="preview-value">-</span>
+                                <span class="preview-label">Centavos</span>
+                                <span id="salaryCentsPreview" class="preview-value">—</span>
                             </div>
                         </div>
                     </div>
+
                     <input type="hidden" id="salary_value" name="salary_value">
                     <input type="hidden" id="salary_text" name="salary_text">
                     <input type="hidden" id="salary_cents_text" name="salary_cents_text">
                 </section>
 
-                <!-- Navigation Buttons -->
+                <!-- ── Navigation ──────────────── -->
                 <div class="stepper-navigation">
                     <button type="button" class="btn-nav btn-prev" id="prevBtn" disabled>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <polyline points="15 18 9 12 15 6"></polyline>
                         </svg>
                         Anterior
                     </button>
+
                     <button type="button" class="btn-nav btn-next" id="nextBtn">
                         Siguiente
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <polyline points="9 18 15 12 9 6"></polyline>
                         </svg>
                     </button>
+
                     <button type="submit" class="btn-generate" id="generateBtn" style="display: none;">
                         <span class="btn-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                                <polyline points="7 10 12 15 17 10" />
-                                <line x1="12" y1="15" x2="12" y2="3" />
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                <polyline points="7 10 12 15 17 10"/>
+                                <line x1="12" y1="15" x2="12" y2="3"/>
                             </svg>
                         </span>
                         <span class="btn-text">Generar Contrato</span>
                     </button>
+
                     <button type="button" class="btn-new-contract" id="newContractBtn" style="display: none;">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                            <polyline points="14 2 14 8 20 8" />
-                            <line x1="12" y1="18" x2="12" y2="12" />
-                            <line x1="9" y1="15" x2="15" y2="15" />
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                            <polyline points="14 2 14 8 20 8"/>
+                            <line x1="12" y1="18" x2="12" y2="12"/>
+                            <line x1="9" y1="15" x2="15" y2="15"/>
                         </svg>
                         Nuevo Contrato
                     </button>
                 </div>
+
             </form>
         </main>
 
         <footer class="footer">
-            <p>Generador de Contratos © 2026 - Samborondón</p>
+            <p>Generador de Contratos &copy; 2026</p>
         </footer>
     </div>
 
-    <!-- Toast Notification -->
-    <div id="toast" class="toast">
+    <!-- Toast -->
+    <div id="toast" class="toast" role="alert" aria-live="assertive">
         <span class="toast-icon">✓</span>
         <span class="toast-message">Contrato generado exitosamente</span>
     </div>

@@ -516,6 +516,10 @@ const UIService = {
         if (predefinedSection) predefinedSection.style.display = 'block';
         if (manualSection) manualSection.style.display = 'none';
 
+        // Reset segmented control visual state
+        document.getElementById('lbl-predefined')?.classList.add('selected');
+        document.getElementById('lbl-manual')?.classList.remove('selected');
+
         // Remove filled classes
         document.querySelectorAll('.filled').forEach(el => el.classList.remove('filled'));
 
@@ -710,7 +714,8 @@ const EventHandlers = {
         const mode = event.target.value;
         const predefinedSection = document.getElementById('predefined_section');
         const manualSection = document.getElementById('manual_section');
-        
+
+        // Toggle panel visibility
         if (mode === 'predefined') {
             predefinedSection.style.display = 'block';
             manualSection.style.display = 'none';
@@ -718,6 +723,10 @@ const EventHandlers = {
             predefinedSection.style.display = 'none';
             manualSection.style.display = 'block';
         }
+
+        // Sync segmented-control appearance for browsers without :has() support
+        document.getElementById('lbl-predefined')?.classList.toggle('selected', mode === 'predefined');
+        document.getElementById('lbl-manual')?.classList.toggle('selected', mode === 'manual');
     }
 };
 
@@ -754,6 +763,9 @@ const App = {
         document.querySelectorAll('input[name="position_mode"]').forEach(radio => {
             radio.addEventListener('change', EventHandlers.onPositionModeChange);
         });
+
+        // Initialize segmented-control appearance
+        document.getElementById('lbl-predefined')?.classList.add('selected');
     }
 };
 
