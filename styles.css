@@ -1034,3 +1034,147 @@ select option {
     color: var(--text-muted);
     font-style: italic;
 }
+
+/* ============================================
+   CLOCK PICKER STYLES
+   ============================================ */
+
+.clock-picker-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-lg);
+    background: var(--bg-secondary);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+    user-select: none;
+}
+
+/* Time display at top: HH:MM */
+.clock-display {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.clock-display-hours,
+.clock-display-minutes {
+    padding: 4px 10px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background var(--transition-fast), color var(--transition-fast);
+    color: var(--text-muted);
+    background: transparent;
+}
+
+.clock-display-hours.active,
+.clock-display-minutes.active {
+    background: var(--gradient-primary);
+    color: white;
+    border-radius: var(--radius-sm);
+}
+
+.clock-display-colon {
+    color: var(--text-secondary);
+    font-weight: 400;
+}
+
+/* Clock Face */
+.clock-face {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle at center, var(--bg-tertiary) 0%, var(--bg-secondary) 100%);
+    border: 2px solid var(--glass-border);
+    box-shadow: 0 0 30px rgba(0,0,0,0.4), inset 0 0 20px rgba(0,0,0,0.2);
+    flex-shrink: 0;
+}
+
+/* Clock hand */
+.clock-hand {
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+    width: 38%;
+    height: 3px;
+    background: var(--gradient-primary);
+    transform-origin: right center;
+    border-radius: 3px 0 0 3px;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-left: -38%;
+    box-shadow: 0 0 8px rgba(14, 165, 233, 0.6);
+}
+
+/* Clock center dot */
+.clock-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 10px;
+    height: 10px;
+    background: var(--primary-400);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    box-shadow: 0 0 6px rgba(14, 165, 233, 0.8);
+}
+
+/* Clock numbers */
+.clock-number {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translate(-50%, -50%);
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
+    z-index: 1;
+}
+
+.clock-number:hover {
+    background: rgba(14, 165, 233, 0.2);
+    color: var(--primary-300);
+    transform: translate(-50%, -50%) scale(1.15);
+}
+
+.clock-number.active {
+    background: var(--gradient-primary);
+    color: white;
+    box-shadow: 0 0 10px rgba(14, 165, 233, 0.5);
+}
+
+/* Confirm button */
+.clock-confirm-btn {
+    padding: var(--space-sm) var(--space-xl);
+    background: var(--gradient-primary);
+    border: none;
+    border-radius: var(--radius-md);
+    color: white;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    font-family: inherit;
+    box-shadow: 0 2px 10px rgba(14, 165, 233, 0.3);
+}
+
+.clock-confirm-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 15px rgba(14, 165, 233, 0.5);
+}
+
+.clock-confirm-btn:active {
+    transform: translateY(0);
+}

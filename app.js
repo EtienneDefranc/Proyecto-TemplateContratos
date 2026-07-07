@@ -495,7 +495,7 @@ const UIService = {
 
     showNewContractButton() {
         const { generateBtn, newContractBtn, prevBtn } = this.elements;
-        if (generateBtn) generateBtn.style.display = 'none';
+        // Keep generateBtn visible so the user can regenerate without resetting
         if (newContractBtn) newContractBtn.style.display = 'flex';
         if (prevBtn) prevBtn.style.display = 'none';
     },
@@ -507,6 +507,9 @@ const UIService = {
         // Clear previews
         this.clearPreview('datePreview');
         this.clearPreview('salaryPreview');
+
+        // Reset clock pickers
+        ClockPicker.resetAll();
 
         // Reset position mode to predefined
         const predefinedRadio = document.querySelector('input[name="position_mode"][value="predefined"]');
@@ -722,6 +725,194 @@ const EventHandlers = {
 };
 
 // ============================================
+// CLOCK PICKER
+// Analog clock UI for time inputs
+// ============================================
+const ClockPicker = {
+    activeInput: null,
+    mode: 'hours', // 'hours' or 'minutes'
+    hours: 0,
+    minutes: 0,
+
+    create(inputEl) {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'clock-picker-wrapper';
+
+        const display = document.createElement('div');
+        display.className = 'clock-display';
+
+        const hoursSpan = document.createElement('span');
+        hoursSpan.className = 'clock-display-hours active';
+        const colon = document.createElement('span');
+        colon.textContent = ':';
+        colon.className = 'clock-display-colon';
+        const minutesSpan = document.createElement('span');
+        minutesSpan.className = 'clock-display-minutes';
+
+        display.appendChild(hoursSpan);
+        display.appendChild(colon);
+        display.appendChild(minutesSpan);
+
+        const clockFace = document.createElement('div');
+        clockFace.className = 'clock-face';
+
+        const hand = document.createElement('div');
+        hand.className = 'clock-hand';
+        const center = document.createElement('div');
+        center.className = 'clock-center';
+        clockFace.appendChild(hand);
+        clockFace.appendChild(center);
+
+        const confirmBtn = document.createElement('button');
+        confirmBtn.type = 'button';
+        confirmBtn.className = 'clock-confirm-btn';
+        confirmBtn.textContent = 'Confirmar';
+
+        wrapper.appendChild(display);
+        wrapper.appendChild(clockFace);
+        wrapper.appendChild(confirmBtn);
+
+        inputEl.parentNode.insertBefore(wrapper, inputEl.nextSibling);
+        inputEl.style.display = 'none';
+
+        // Parse existing value
+        const [h, m] = (inputEl.value || '00:00').split(':').map(Number);
+        const picker = { wrapper, hoursSpan, minutesSpan, hand, inputEl };
+        picker.hours = isNaN(h) ? 0 : h;
+        picker.minutes = isNaN(m) ? 0 : m;
+        picker.mode = 'hours';
+
+        this._render(picker);
+        this._buildNumbers(clockFace, picker);
+
+        hoursSpan.addEventListener('click', () => {
+            picker.mode = 'hours';
+            hoursSpan.classList.add('active');
+            minutesSpan.classList.remove('active');
+            this._buildNumbers(clockFace, picker);
+            this._render(picker);
+        });
+        minutesSpan.addEventListener('click', () => {
+            picker.mode = 'minutes';
+            minutesSpan.classList.add('active');
+            hoursSpan.classList.remove('active');
+            this._buildNumbers(clockFace, picker);
+            this._render(picker);
+        });
+
+        clockFace.addEventListener('click', (e) => this._onClockClick(e, clockFace, picker));
+        confirmBtn.addEventListener('click', () => this._confirm(picker));
+
+        return picker;
+    },
+
+    _buildNumbers(clockFace, picker) {
+        // Remove old numbers
+        clockFace.querySelectorAll('.clock-number').forEach(n => n.remove());
+
+        const count = picker.mode === 'hours' ? 12 : 12;
+        const step = picker.mode === 'hours' ? 1 : 5;
+        const radius = 80;
+
+        for (let i = 0; i < count; i++) {
+            const val = picker.mode === 'hours' ? (i === 0 ? 12 : i) : i * 5;
+            const angle = ((i / count) * 2 * Math.PI) - (Math.PI / 2);
+            const x = 50 + (radius / 1) * Math.cos(angle) * 0.75;
+            const y = 50 + (radius / 1) * Math.sin(angle) * 0.75;
+
+            const numEl = document.createElement('div');
+            numEl.className = 'clock-number';
+            numEl.textContent = picker.mode === 'hours'
+                ? (i === 0 ? 12 : i)
+                : (val < 10 ? '0' + val : val);
+            numEl.style.left = x + '%';
+            numEl.style.top = y + '%';
+            numEl.dataset.value = val;
+            clockFace.appendChild(numEl);
+        }
+        this._highlightNumber(clockFace, picker);
+    },
+
+    _highlightNumber(clockFace, picker) {
+        const current = picker.mode === 'hours'
+            ? (picker.hours % 12 || 12)
+            : picker.minutes;
+        clockFace.querySelectorAll('.clock-number').forEach(n => {
+            const v = parseInt(n.dataset.value);
+            n.classList.toggle('active', v === current);
+        });
+    },
+
+    _render(picker) {
+        const h = picker.hours;
+        const m = picker.minutes;
+        picker.hoursSpan.textContent = h < 10 ? '0' + h : '' + h;
+        picker.minutesSpan.textContent = m < 10 ? '0' + m : '' + m;
+
+        let angle;
+        if (picker.mode === 'hours') {
+            angle = ((h % 12) / 12) * 360 - 90;
+        } else {
+            angle = (m / 60) * 360 - 90;
+        }
+        picker.hand.style.transform = `rotate(${angle}deg)`;
+    },
+
+    _onClockClick(e, clockFace, picker) {
+        if (e.target === clockFace || e.target === picker.hand || e.target.classList.contains('clock-center')) return;
+        if (!e.target.classList.contains('clock-number')) return;
+        const val = parseInt(e.target.dataset.value);
+        if (picker.mode === 'hours') {
+            picker.hours = val === 12 ? 0 : val;
+        } else {
+            picker.minutes = val;
+        }
+        this._highlightNumber(clockFace, picker);
+        this._render(picker);
+
+        // Auto switch to minutes after picking hour
+        if (picker.mode === 'hours') {
+            picker.mode = 'minutes';
+            picker.hoursSpan.classList.remove('active');
+            picker.minutesSpan.classList.add('active');
+            this._buildNumbers(clockFace, picker);
+            this._render(picker);
+        }
+    },
+
+    _confirm(picker) {
+        const h = picker.hours < 10 ? '0' + picker.hours : '' + picker.hours;
+        const m = picker.minutes < 10 ? '0' + picker.minutes : '' + picker.minutes;
+        picker.inputEl.value = `${h}:${m}`;
+        picker.inputEl.dispatchEvent(new Event('change', { bubbles: true }));
+        picker.inputEl.classList.add('filled');
+    },
+
+    initAll() {
+        document.querySelectorAll('input[type="time"]').forEach(input => {
+            this.create(input);
+        });
+    },
+
+    resetAll() {
+        document.querySelectorAll('.clock-picker-wrapper').forEach(wrapper => {
+            // Reset display
+            const hoursSpan = wrapper.querySelector('.clock-display-hours');
+            const minutesSpan = wrapper.querySelector('.clock-display-minutes');
+            if (hoursSpan) hoursSpan.textContent = '00';
+            if (minutesSpan) minutesSpan.textContent = '00';
+            // Reset hand to 12 o'clock
+            const hand = wrapper.querySelector('.clock-hand');
+            if (hand) hand.style.transform = 'rotate(-90deg)';
+            // Reset active number
+            wrapper.querySelectorAll('.clock-number').forEach(n => n.classList.remove('active'));
+            const twelve = wrapper.querySelector('.clock-number[data-value="12"]');
+            if (twelve) twelve.classList.add('active');
+        });
+    }
+};
+
+// ============================================
 // APPLICATION
 // ============================================
 const App = {
@@ -733,6 +924,9 @@ const App = {
         // Load predefined positions
         await PositionService.loadPositions();
         PositionService.populateDropdown();
+
+        // Initialize clock pickers for time inputs
+        ClockPicker.initAll();
 
         // Bind events
         const { form, prevBtn, nextBtn, newContractBtn } = UIService.elements;
