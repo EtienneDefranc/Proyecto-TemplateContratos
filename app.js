@@ -569,7 +569,7 @@ const ContractGenerator = {
             formData.city_working_place = 'Centro Comercial “Samborondón Plaza”, planta baja, local No. 13, Km. 1.5 vía a Samborondón, provincia de ' + formData.province;
         } else if (cityId === 'Quito') {
             formData.city = 'Quito'.toUpperCase();
-            formData.city_working_place = 'Eloy Alfaro y Amazonas';
+            formData.city_working_place = 'Av. Eloy Alfaro N30-419 y Av. Mariana de Jesús';
         }
         
         // Convertir la lista de funciones a un formato de array para permitir listas nativas en Word
